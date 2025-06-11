@@ -1,18 +1,60 @@
 # ChallengeOne-3364022
-Class assignment
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isEndOfWord = false;
+    }
+}
 
-Implement the Trie class:
+class Trie {
+    constructor() {
+        this.root = new TrieNode();
+    }
+    
+    insert(word) {
+        let current = this.root;
+        
+        for (let letter of word) {
+            if (!current.children[letter]) {
+                current.children[letter] = new TrieNode();
+            }
+            current = current.children[letter];
+        }
+        
+        current.isEndOfWord = true;
+    }
+    
+    search(word) {
+        let current = this.root;
+        
+        for (let letter of word) {
+            if (!current.children[letter]) {
+                return false;
+            }
+            current = current.children[letter];
+        }
+        
+        return current.isEndOfWord;
+    }
+    
+    startsWith(prefix) {
+        let current = this.root;
+        
+        for (let letter of prefix) {
+            if (!current.children[letter]) {
+                return false;
+            }
+            current = current.children[letter];
+        }
+        
+        return true;
+    }
+}
 
-Trie() Initializes the trie object.
-
-void insert(String word) Inserts the string word into the trie.
-
-boolean search(String word) Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.
-
-boolean startsWith(String prefix) Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
-Example 1:
-Input
-["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
-[[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
-Output
-[null, null, true, false, true, null, true]
+let trie = new Trie();
+trie.insert("apple");
+console.log(trie.search("apple"));
+console.log(trie.search("app"));
+console.log(trie.startsWith("app"));
+trie.insert("app");
+console.log(trie.search("app"));
